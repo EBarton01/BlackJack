@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f3f3f3;
+}
+
+.game-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #634f4f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.topScreen {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}
+
+.middleScreen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.bottomScreen {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.buttonsAndBets {
+    display: flex;
+    flex-direction: column;
+}
+
+.deck {
+    height: 200px;
+    width: 100px;
+    background-color: #b53535;
+    border-radius: 5px;
+}
+
+.dealerHand {
+    height: 200px;
+    width: 400px;
+    background-color: #055a05;
+    border-radius: 5px;
+}
+
+.infoBox {
+    height: 150px;
+    width: 250px;
+    background-color: #8a8b8a;
+    border-radius: 5px;
+}
+
+.playerHand {
+    height: 200px;
+    width: 400px;
+    background-color: #0d2c7b;
+    border-radius: 5px;
+}
+
+.buttonsBox {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    background-color: #8c9e07;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.buttonsBox button{
+    margin: 3px;
+    border-radius: 5px;
+    width: 75px;
+}
+
+.betBox {
+    height: 200px;
+    width: 100%;
+    background-color: #9e4107;
+    border-radius: 5px;
+    padding-top: 10px;
+}
+
+.a25Btn, .a100Btn, .a500Btn {
+    border-radius: 100px;
+    width: 100px;
+    height: 100px;
+}
+
+.coinsTotal {
+    text-align: left;
+}
