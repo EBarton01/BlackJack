@@ -1,12 +1,8 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f3f3f3;
-}
-
 .game-container {
-    width: 80%;
+    width: 90%;
+    max-width: 700px;
     margin: 0 auto;
+    margin-top: 20px;
     background-color: #634f4f;
     padding: 20px;
     border-radius: 8px;
@@ -15,11 +11,42 @@ body {
     flex-direction: column;
 }
 
-.topScreen {
+.header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+
+}
+
+.dealer_box {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 250px;
+}
+
+.card {
+    transform: rotate(345deg);
+}
+
+
+.playerHand, .dealerHand{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    
+    flex-wrap: wrap;
+    max-width: 350px;
+    min-width: 350px;
+    height: auto;
+}
+
+.coinsTotal, #coinsTotal {
+    margin: 0px;
+}
+
+.dealerTotal, .player_score, .coinsTotal {
+    font-size: 30px;
 }
 
 .middleScreen {
@@ -30,50 +57,29 @@ body {
     margin-top: 20px;
 }
 
-.bottomScreen {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.buttonsAndBets {
-    display: flex;
-    flex-direction: column;
-}
-
-.deck {
-    height: 200px;
-    width: 100px;
-    background-color: #b53535;
-    border-radius: 5px;
-}
-
-.dealerHand {
-    height: 200px;
-    width: 400px;
-    background-color: #055a05;
-    border-radius: 5px;
-}
-
 .infoBox {
     height: 150px;
     width: 250px;
     background-color: #8a8b8a;
     border-radius: 5px;
+    text-align: center;
 }
 
-.playerHand {
-    height: 200px;
-    width: 400px;
-    background-color: #0d2c7b;
-    border-radius: 5px;
+.player_box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
+.buttonsAndBets{
+    margin-left: 10px;
+}
 .buttonsBox {
     display: flex;
     flex-direction: row;
     height: 50px;
-    background-color: #8c9e07;
+    background-color: #07661b;
     border-radius: 5px;
     padding: 5px;
 }
@@ -81,23 +87,63 @@ body {
 .buttonsBox button{
     margin: 3px;
     border-radius: 5px;
-    width: 75px;
+    width: 50px;
 }
 
 .betBox {
-    height: 200px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
     width: 100%;
-    background-color: #9e4107;
+    background-color: #07661b;
     border-radius: 5px;
     padding-top: 10px;
+    text-align: center;
 }
 
 .a25Btn, .a100Btn, .a500Btn {
     border-radius: 100px;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
+    background-size: cover; /* Ensure the image covers the button area without being stretched */
+    background-position: center; /* Center the background image */
+    border: none; /* Remove any default border */
+    padding: 0; /* Remove any default padding */
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#hitBtn, #standBtn, #doubleBtn {
+    width: 64px;
+    height: 32px;
+    background-size: cover; /* Ensure the image covers the button area without being stretched */
+    background-position: center; /* Center the background image */
+    border: none; /* Remove any default border */
+    padding: 0; /* Remove any default padding */
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.betChips{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.betAmount p {
+    font-size: 25px;
+    margin: 0;
+    margin-right: 5px;
+    display: inline;
 }
 
 .coinsTotal {
     text-align: left;
+}
+
+.player_score, .dealerTotal {
+    margin: 0;
+    margin-left: 10px;
 }

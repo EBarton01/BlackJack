@@ -156,19 +156,68 @@ def stand():
     })
 
 
+@app.route('/double', methods=['POST'])
+def double():
+    if 'deck' not in session or 'player_hand' not in session or 'bet_amount' not in session:
+        return jsonify({'error': 'Game not started or already ended'}), 400
+
+    deck = session['deck']
+    player_hand = session['player_hand']
+    bet_amount = session['bet_amount']
+
+    # Double the bet
+    session['bet_amount'] = bet_amount * 2
+
+    # Deal only one card to the player
+    if deck:
+        new_card = deck.pop()
+        player_hand.append(new_card)
+        session['deck'] = deck
+        session['player_hand'] = player_hand
+
+    player_total = calculate_hand_value(player_hand)
+
+    # Proceed to dealer's turn
+    dealer_hand = session['dealer_hand']
+    dealer_total = calculate_hand_value(dealer_hand)
+
+    # Dealer keeps hitting until reaching 17 or more
+    while dealer_total < 17:
+        if deck:
+            new_card = deck.pop()
+            dealer_hand.append(new_card)
+            dealer_total = calculate_hand_value(dealer_hand)
+        else:
+            break
+
+    session['dealer_hand'] = dealer_hand
+
+    result, winnings = determine_game_result(player_hand, player_total, dealer_total, session['bet_amount'])
+    
+    # Return the new state including the new card, updated player total, dealer's hand, and the result
+    return jsonify({
+        'new_card': {'rank': new_card['rank'], 'suit': new_card['suit']},
+        'player_total': player_total,
+        'dealer_hand': dealer_hand,
+        'dealer_total': dealer_total,
+        'result': result,
+        'winnings': winnings
+    })
+
+
 def determine_game_result(player_hand, player_total, dealer_total, bet_amount):
     if player_total > 21:
         return "Bust! You lose.", 0
-    elif dealer_total > 21:
-        return "Player wins! Dealer busts", bet_amount * 2
     elif player_total == 21 and len(player_hand) == 2:
         return "Blackjack!", int(bet_amount * 2.5)
+    elif dealer_total > 21:
+        return "Player wins! Dealer busts", bet_amount * 2
     elif player_total > dealer_total:
         return "Player wins!", bet_amount * 2
-    elif dealer_total > player_total:
-        return "Dealer wins!", 0
-    else:  # This is the case where it's a push
+    elif dealer_total == player_total:
         return "Push! It's a tie.", bet_amount
+    else:  # This is the case where it's a push
+        return "Dealer wins!", 0
 
 
 @app.route('/reset-game', methods=['POST'])
@@ -180,4 +229,4 @@ def reset_game():
     return jsonify({'status': 'Game reset'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000,debug=True)

@@ -88,7 +88,7 @@ document.getElementById('betBtn').addEventListener('click', function() {
 
         document.getElementById('hitBtn').disabled = false;
         document.getElementById('standBtn').disabled = false;
-        document.getElementById('doubleBtn').disabled = true;
+        document.getElementById('doubleBtn').disabled = false;
         document.getElementById('splitBtn').disabled = true;
 
         document.getElementById('resetBetBtn').disabled = true;
@@ -126,15 +126,20 @@ document.getElementById('betBtn').addEventListener('click', function() {
 function displayCard(hand, elementId) {
     const element = document.getElementById(elementId);
     element.innerHTML = '';  // Clear existing cards
+
     hand.forEach(card => {
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
+
         if (card.rank === 'Hidden') {
-            cardDiv.innerText = 'Hidden';
-            // Apply additional styling or a back-of-card image if desired
+            cardDiv.innerHTML = '<img src="/static/images/cards/back_of_card.png" alt="Hidden Card">'; // Update this path as needed
         } else {
-            cardDiv.innerText = card.rank + ' of ' + card.suit;
+            // Assuming a consistent naming convention for the image files
+            let imageName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png`; // This matches your Flask static file naming
+            let imagePath = `/static/images/cards/${card.suit.toLowerCase()}/${imageName}`;
+            cardDiv.innerHTML = `<img src="${imagePath}" alt="${card.rank} of ${card.suit}">`;
         }
+
         element.appendChild(cardDiv);
     });
 }
@@ -144,10 +149,18 @@ function displayNewCard(card, elementId) {
     const element = document.getElementById(elementId);
     const cardDiv = document.createElement('div');
     cardDiv.className = 'card';
-    cardDiv.innerText = card.rank + ' of ' + card.suit;
+
+    if (card.rank === 'Hidden') {
+        cardDiv.innerHTML = '<img src="/static/images/back_of_card.png" alt="Hidden Card">'; // Update this path as needed
+    } else {
+        // Assuming a consistent naming convention for the image files
+        let imageName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png`; // This matches your Flask static file naming
+        let imagePath = `/static/images/cards/${card.suit.toLowerCase()}/${imageName}`;
+        cardDiv.innerHTML = `<img src="${imagePath}" alt="${card.rank} of ${card.suit}">`;
+    }
+
     element.appendChild(cardDiv);
 }
-
 document.getElementById('hitBtn').addEventListener('click', function() {
 
     fetch('/hit', {
@@ -214,7 +227,7 @@ document.getElementById('standBtn').addEventListener('click', function() {
 
         // Show the game result after a brief pause
         setTimeout(() => {
-            if (data.result.includes("Player wins") || data.result.includes("Blackjack") || data.result.includes("Blackjack")) {
+            if (data.result.includes("Player wins") || data.result.includes("Blackjack") || data.result.includes("Push")) {
                 playerCoins += data.winnings; // Update coinsTotal for a win
                 alert(`${data.result} You won ${data.winnings}c.`);
                 updateCoinsAndBetDisplay();  // Update the display of coins and bet
@@ -227,6 +240,54 @@ document.getElementById('standBtn').addEventListener('click', function() {
         }, 2000);
     });
 });
+
+document.getElementById('doubleBtn').addEventListener('click', function() {
+    // Ensure the player has enough coins to double the bet
+    if (playerCoins >= currentBet) {
+        playerCoins -= currentBet; // Deduct the additional bet for doubling
+        currentBet *= 2; // Double the current bet
+        
+        updateCoinsAndBetDisplay(); // Update the UI to reflect the new coins and bet amounts
+        
+        fetch('/double', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                // Display the new card to the player and update totals
+                displayNewCard(data.new_card, 'playerHand');
+                document.getElementById('playerTotal').innerText = 'Player Total: ' + data.player_total;
+
+                // Update the dealer's hand and total
+                displayCard(data.dealer_hand, 'dealerHand');
+                document.getElementById('dealerTotal').innerText = 'Dealer Total: ' + data.dealer_total;
+
+                // Show the game result and winnings, if any
+                setTimeout(() => {
+                    if (data.result.includes("Player wins") || data.result.includes("Blackjack") || data.result.includes("Push")) {
+                        playerCoins += data.winnings; // Update player's coins with the winnings
+                        alert(`${data.result} You won ${data.winnings}c.`);
+                    } else {
+                        alert(data.result);
+                    }
+                    resetGame(); // Reset the game state for a new round
+                    currentBet /= 2;
+                    updateCoinsAndBetDisplay(); // Update the UI to reflect the new coins and bet amounts
+                }, 2000);
+            }
+        });
+    } else {
+        alert('Not enough coins to double the bet.');
+    }
+});
+
+
 
 function resetGame() {
     // Clear the hands and totals

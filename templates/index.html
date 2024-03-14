@@ -8,20 +8,21 @@
 </head>
 <body>
     <div class = "header">
-        <h1>Welcome to Blackjack!</h1>
+        <h2>Black Jack</h2>
         <button id="start-game">Start Game</button>
+        <div class = "coinsTotal">
+            <p id = "coinsTotal">Coins = 100c</p>
+        </div>
     </div>
+
     <div class="game-container">
 
-        <div class = "topScreen">
-            <div class = "deck">
-
-            </div>
+        <div class = "dealer_box">
             
             <div id="dealerHand" class = "dealerHand">
 
             </div>
-            <p id="dealerTotal">Dealer Total: 0</p>
+            <p class = "dealerTotal" id="dealerTotal">Dealer Total: 0</p>
         </div>
 
         <div class = "middleScreen">
@@ -33,38 +34,43 @@
             </div>
         </div>
 
-        <div class = "bottomScreen">
+        <div class = "player_box">
             <div id="playerHand" class = "playerHand">
-
+                
             </div>
-            <p id="playerTotal">Player Total: 0</p>
 
             <div class = "buttonsAndBets">
                 <div class = "buttonsBox">
-                    <button id="hitBtn">Hit</button>
-                    <button id="standBtn">Stand</button>
-                    <button id="doubleBtn">Double</button>
+                    <button id="hitBtn" style="background-image: url(static/images/decoration/hit_btn.png);"></button>
+                    <button id="standBtn" style="background-image: url(static/images/decoration/stand_btn.png);"></button>
+                    <button id="doubleBtn" style="background-image: url(static/images/decoration/dbl_btn.png);"></button>
                     <button id="splitBtn">Split</button>
-
+    
                 </div>
-
+    
                 <div class = "betBox">
-                    <button class =  "a25Btn" id="a25Btn">25c</button>
-                    <button class =  "a100Btn" id="a100Btn">100c</button>
-                    <button class =  "a500Btn" id="a500Btn">500c</button>
-
+                    <div class = "betChips">
+                        <button class =  "a25Btn" id="a25Btn" style="background-image: url(static/images/decoration/25_chip.png);"></button>
+                        <button class =  "a100Btn" id="a100Btn" style="background-image: url(static/images/decoration/100_chip.png);"></button>
+                        <button class =  "a500Btn" id="a500Btn" style="background-image: url(static/images/decoration/500_chip.png);"></button>
+                    </div>
+    
                     <div class = "betAmount">
                         <p>Bet amount:<p id = "betAmount">0c</p></p>
+                    </div>
+
+                    <div class = resetButtons>
                         <button id="resetBetBtn">Reset Bet</button>
                         <button id="betBtn">Bet</button>
                     </div>
                 </div>
                 
             </div>
-            
+
         </div>
-        <div class = "coinsTotal">
-            <p id = "coinsTotal">Coins = 100c</p>
+
+        <div class = "player_score">
+            <p id="playerTotal">Player Total: 0</p>
         </div>
         
     </div>
